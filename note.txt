@@ -1,0 +1,66 @@
+# WebPortfolio_clone_reddit
+use recat and TypeScript wiht next.js
+DB : postgreSQL with user docker
+
+++module
+nodemon : 코드를 변경을 할 때마다 서버를 다시 재시작 하지 않아도 자동으로 재시작을 해주는 역할
+ts-node : node.js에서 TypeScript Compiler를 통하지 않고 직접 TypeScript를 실행
+morgan : node.js에서 사용되는 로그의 관리를 위한 middleware
+@types/express @types/node : express 및 node.js 에 대한 Type 정의를 도와주는 모듈
+pg : postgreSQLDB와 interface하기 위한 node.js의 모듈
+typuorm : TypeScript 및 JS를 node.js에서 실행하는 orm
+reflect-metadata
+
+++tsconfig.json : TypsScript로 작성된 코드를 JS로 Compile하는 옵션을 설정하는 파일
+
+++환경구축
+01. 풀 스택으로 작업을 하기 위하여 clinet와 server 파일을 생성
+02. node.js에 next.js, express같은 모듈과 TypeScript로 개발이 가능한 환경을 구축
+03. 도커에서 postgre를 사용하기 위해서 데스크톱에 도커를 설치하고 docker-copose를 해줌.
+
+++엔티티 작성
+01. 공통적으로 사용하는 coloum들을 정의하기 위해 Entity라는 파일에 BaseEntity를 작성
+02. reddit의 clone을 만드는것이 목적이기 때문에 유저와 커뮤니티의 게시물의 기능을 하는 Sub, 작성된 글의 기능을 하는 Post, 댓글 기능을 하는 Comment, 투표의 기능을 구현하기 위해 Vote라는 이름의 엔티티들을 작성.
+03. User에서 email,이름은 2글자 이상, 비밀번호는 6글자 이상으로 설정
+04. Sub에서 커뮤니티에 글을 남긴 유저의 사진이 없으면 기본사진을 설정
+05. Post에서 slug(Url을 만들떄 사용)를 사용하기 위해 util폴더에 slugify makeId 함수를 생성
+--comment의 numbering과 vote의 Score화를 위해 기능을 만듬
+06. Vote에서 해당 post 혹은 comment에 대한 vote 기능을 작성
+07. Comment에서 username에 따라서 voteScore를 만들어서 count.
+
+++회원가입 화면과 기능
+01. css를 사용하기 위해 Tailwind CSS PostCSS를 설정 및 적용
+02. client와 server는 서로 사용하는 port가 다르기 때문에 값을 넘겨주는 행위를 하려고 하면 cors error가 발생한다.
+-- 이를 해결하기 위해 cors모듈을 설치하고, port값을 설정하여준다.
+03. auth에서 register페이지의 req, res를 받아서 이미 사용이 되고 있는지를 확인하는 작업을 하고, 기존에 있다면 error, 없다면 저장하는 처리를 실행.
+--자세한 동작은 auth의 주석을 참고.
+--회원가입 기능을 확인하는중, 500에러로 입력한 데이터를 확인하지 못하는것을 확인, data-source.ts에서 지정한 entries의 경로를 하드코딩하여 직접 entites와 연결하는것으로 수정.
+-- 회원가입 기능 확인용 등록한 User list
+-- test@test.com testtest password
+-- 회원가입 버튼의 handleSubmit 작동 확인
+
+++로그인 화면과 기능
+01. 회원가입의 화면을 가져와서 사용.
+02. 로그인 기능을 만들기 위해 cookie와 JWT를 사용, client와 server에서 보내는 port번호가 다르기 떄문에 withCredentials를 사용하여 server의 cors부분에서 true로 설정
+03. .env로 설정한 값들을 쉽게 하용하기 위해서 dotenv를 사용.
+04. 로그인시 cookie의 처리를 보안상의 이유로 https를 사용한 연결에서만 cookie를 사용이 가능하게 httpOnly를 설정.
+05. User의 정보를 Context에 담아서 유저정보 인증유무를 처리하는 StateContext, 유저정보의 업데이트와 인증유무를 업데이트처리하는 DispatchContext를 작성
+--react에서 Hook으로 usestate를 사용해도 되지만, 조금더 복잡한 처리를 하기 위해 useReducer를 사용함.
+-- 회원가입 기능 확인용 등록한 User list
+-- test01@login.com logintest01 password
+-- test02@login.com logintest02 password
+-- 로그인 버튼의 handleSubmit(dispatch제외) 작동 확인.
+
+++커뮤니티 생성
+01. page의 안에  커뮤니티(Sub)를 만들기 위한 기능들을 모으기 위해 폴더를 생성 후, create.tsx를 만들어줌.
+02. server의 routes 폴더에 createSub를 정의.
+03. handler에서 매번 User의 정보를 가져오고, 인증을 하는 작업을 많이 사용하기 때문에 middleware폴더에 user, auth를 생성
+04. cookie를 요청해야 하는데 매번 요청할 필여 없이 server.ts에 cookie-parser를 사용하여 여러곳에서 사용이 가능하게 정의.
+-- Sub를 생성하는 부분으로 User의 정보와 token을 잘 가져오는지 확인 완료
+05. User의 정보가 없으면 Sub를 만들려고 해도 작성권한이 없기 때문에 작성페이지로 접근이 불가능.
+06. User의 정보가 있다면 Sub의 name이 unique값이기 때문에, 기존에 있다면 error 없다면 Db에 저장
+07. 이미 로그인이 되어있는 User가 다시 로그인페이지로 들어가지 못하게 처리.
+08. 커뮤니티 페이지 생성
+09. 로그아웃 기능 생성
+10. root 페이지에서 NavBar를 사용하여 커뮤니티 리스트 생성.
+11. 커뮤니티 리스트를 가져올떄 axios 대신 swr을 사용
