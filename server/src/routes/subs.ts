@@ -73,7 +73,8 @@ const topSubs = async (_:Request, res: Response) => {
           .execute();
         return res.json(subs);
     } catch (error) {
-        
+        console.log(error);
+        return res.status(500).json({ error: "문제가 발생했습니다." });
     }
 }
 
