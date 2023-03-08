@@ -10,6 +10,13 @@ morgan : node.js에서 사용되는 로그의 관리를 위한 middleware
 pg : postgreSQLDB와 interface하기 위한 node.js의 모듈
 typuorm : TypeScript 및 JS를 node.js에서 실행하는 orm
 reflect-metadata
+axios
+cookie
+cookie-parser
+dotenv
+jsonwebtoken
+classnames
+multer
 
 ++tsconfig.json : TypsScript로 작성된 코드를 JS로 Compile하는 옵션을 설정하는 파일
 
@@ -65,3 +72,9 @@ reflect-metadata
 10. root 페이지에서 NavBar를 사용하여 커뮤니티 리스트 생성.
 11. 커뮤니티 리스트를 가져올떄 axios 대신 swr을 사용
 12. 커뮤니티 생성하는 버튼을 회원이 아니면 보이지 않게 처리
+13. 커뮤니티의 subs를 화면에 표시하고, user이면 보이게 설정.
+14. Entity.ts가 BaseEntity로 사용되고 있기 때문에, 그 안에서 toJSON이라는 class-transformer 모듈을 사용하여 extends하고 있는 다른 entities에 Ssub.ts에서 expose해준것을 사용이 가능하게 만들어줌.
+-- 구체적으로는 imageUrn과 bannerUrn
+15. 프로필 사진을 변경하는 기능을 추가하기 위해서 이미지를 업로드하는 기능을 추가.
+-- 이미지 업로드를 위한 router 생성
+-- 업로드한 이미지를 로컬에 저장하기 위해서 multer를 사용 

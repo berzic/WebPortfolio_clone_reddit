@@ -2,8 +2,10 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["www.gravatar.com"],
-  },
+    domains: [
+      "www.gravatar.com", "localhost"
+    ]
+  }
 }
 
 module.exports = nextConfig
