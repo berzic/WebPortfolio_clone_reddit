@@ -1,27 +1,38 @@
-import { Request, Response, Router } from "express";
+import { NextFunction, Request, Response, Router } from "express";
 import { User } from "../entities/User";
-import userMiddleware from '../middlewares/user';
-import authMiddleware from '../middlewares/auth';
+import userMiddleware from "../middlewares/user";
+import authMiddleware from "../middlewares/auth";
 import { isEmpty } from "class-validator";
 import { AppDataSource } from "../data-source";
 import Sub from "../entities/Sub";
 import Post from "../entities/Post";
-import { NextFunction } from "express-serve-static-core";
 import multer, { FileFilterCallback } from "multer";
-import { makeId } from "../utils/helper";
 import path from "path";
-import { unlinkSync } from "fs";
+import { fstat, unlinkSync } from "fs";
 
 const getSub = async (req: Request, res: Response) => {
-    const name = req.params.name;
-    try {
-        const sub = await Sub.findOneByOrFail({ name });
-        
-        return res.json(sub);
-    } catch (error) {
-        return res.status(404).json({ error: "커뮤니티를 찾을 수 없습니다."});
+  const name = req.params.name;
+  try {
+    const sub = await Sub.findOneByOrFail({ name });
+
+    // 포스트를 생성한 후에 해당 sub에 속하는 포스트 정보들을 넣어주기
+    const posts = await Post.find({
+      where: { subName: sub.name },
+      order: { createAt: "DESC" }, //createdAt? createAt?
+      relations: ["comments", "votes"],
+    });
+
+    sub.posts = posts;
+
+    if (res.locals.user) {
+      sub.posts.forEach((p) => p.setUserVote(res.locals.user));
     }
-}
+
+    return res.json(sub);
+  } catch (error) {
+    return res.status(404).json({ error: "커뮤니티를 찾을 수 없습니다." });
+  }
+};
 
 const createSub = async (req: Request, res: Response, next) => {
     const { name, title, description } = req.body;
@@ -70,8 +81,6 @@ const createSub = async (req: Request, res: Response, next) => {
         console.log(error);
         return res.status(500).json({ error: "문제가 발생했습니다." })
     }
-    
-
 };
 
 const topSubs = async (_:Request, res: Response) => {

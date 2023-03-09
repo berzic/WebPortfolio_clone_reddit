@@ -1,3 +1,4 @@
+import SideBar from '@/components/SideBar';
 import { useAuthState } from '@/context/auth';
 import axios from 'axios'
 import Image from 'next/image';
@@ -8,20 +9,10 @@ import useSWR from 'swr';
 const SubPage = () => {
     const [ownSub, setOwnSub] = useState(false);
     const { authenticated, user } = useAuthState();
-
-    const fetcher = async (url: string) => {
-        try {
-            const res = await axios.get(url);
-            return res.data;
-        } catch (error: any) {
-            throw error.respose.data;
-        }
-    }
-
     const fileInputRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
     const subNmae = router.query.sub;
-    const {data: sub, error} = useSWR(subNmae ? `/subs/${subNmae}` : null, fetcher);
+    const {data: sub, error} = useSWR(subNmae ? `/subs/${subNmae}` : null);
     console.log('sub', sub);
 
     useEffect(() => {
@@ -62,7 +53,7 @@ const SubPage = () => {
                 <>
                     <div>
                          <input type="file" hidden={true} ref={fileInputRef} onChange={uploadImage} />
-                        {/* 배너 이미지 */}
+                        {/* banner image */}
                         <div className="bg-gray-400">
                         {sub.bannerUrl ? (
                                 <div
@@ -108,9 +99,10 @@ const SubPage = () => {
                             </div>
                         </div>
                     </div>
-                        {/* 포스트와 사이트바 */}
+                        {/* Post와 SideBar */}
                         <div className='flex max-w-5xl px-4 pt-5 mx-auto'>
-
+                            <div className='w-full md:mr-3 md:w-8/12'></div>
+                            <SideBar sub={sub}></SideBar>
                         </div>
 
                 </>
