@@ -7,31 +7,22 @@ import { AppDataSource } from "../data-source";
 import Sub from "../entities/Sub";
 import Post from "../entities/Post";
 import multer, { FileFilterCallback } from "multer";
+import { makeId } from "../utils/helper";
 import path from "path";
-import { fstat, unlinkSync } from "fs";
+import { unlinkSync } from "fs";
 
 const getSub = async (req: Request, res: Response) => {
-  const name = req.params.name;
-  try {
-    const sub = await Sub.findOneByOrFail({ name });
-
-    // 포스트를 생성한 후에 해당 sub에 속하는 포스트 정보들을 넣어주기
-    const posts = await Post.find({
-      where: { subName: sub.name },
-      order: { createAt: "DESC" }, //createdAt? createAt?
-      relations: ["comments", "votes"],
-    });
-
-    sub.posts = posts;
-
-    if (res.locals.user) {
-      sub.posts.forEach((p) => p.setUserVote(res.locals.user));
+    const name = req.params.name;
+    try {
+      const sub = await Sub.findOneByOrFail({ name });
+  
+      // 포스트를 생성한 후에 해당 sub에 속하는 포스트 정보들을 넣어주기
+      
+  
+      return res.json(sub);
+    } catch (error) {
+      return res.status(404).json({ error: "커뮤니티를 찾을 수 없습니다." });
     }
-
-    return res.json(sub);
-  } catch (error) {
-    return res.status(404).json({ error: "커뮤니티를 찾을 수 없습니다." });
-  }
 };
 
 const createSub = async (req: Request, res: Response, next) => {
@@ -106,39 +97,38 @@ const topSubs = async (_:Request, res: Response) => {
 const ownSub = async (req: Request, res: Response, next: NextFunction) => {
     const user: User = res.locals.user;
     try {
-        const sub = await Sub.findOneOrFail({ where: { name: req.params.name } });
-
-        if(sub.username !== user.username) {
-            return res.status(403).json({ error: "이 커뮤니티를 소유하고 있지 않습니다." });
-        }
-
-        res.locals.sub = sub;
-        next();
+      const sub = await Sub.findOneOrFail({ where: { name: req.params.name } });
+  
+      if (sub.username !== user.username) {
+        return res.status(403).json({ error: "이 커뮤니티를 소유하고 있지 않습니다." });
+      }
+  
+      res.locals.sub = sub;
+      next();
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({ error: "문제가 발생했습니다" });
+      console.log(error);
+      return res.status(500).json({ error: " 문제가 발생했습니다." });
     }
-}
+};
 
-const upload = multer({ 
+const upload = multer({
     storage: multer.diskStorage({
         destination: "public/images",
         filename: (_, file, callback) => {
-          const name = makeId(10);
-          callback(null, name + path.extname(file.originalname));//originalname 이라는 이름이 가능한 이유는 이미 [sub].tsx에서 이미지 업로드하는 부분에서 formData의 안에 경로등이 들어있기 때문에 가능.
+            const name = makeId(10);
+            callback(null, name + path.extname(file.originalname));
+          },
+        }),
+        fileFilter: (_, file: any, callback: FileFilterCallback) => {
+            if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+              callback(null, true);
+            } else {
+              callback(new Error("이미지가 아닙니다."));
+            }
         },
-    }),
-    
-    fileFilter: (_, file: any, callback: FileFilterCallback) => {
-      if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
-        callback(null, true);
-      } else {
-        callback(new Error("이미지가 아닙니다."));
-      }
-    },
- });
+});
 
- const uploadSubImage = async (req: Request, res: Response) => {
+const uploadSubImage = async (req: Request, res: Response) => {
     const sub: Sub = res.locals.sub;
     try {
       const type = req.body.type;
@@ -149,12 +139,10 @@ const upload = multer({
         }
   
         // 파일을 지워주기
-        //multer에 의해 캡슐화된 파일 객체에는 파일 경로가 있기 떄문애
-        //dirname/path가 자동으로 추가.(req.file.path)
         unlinkSync(req.file.path);
         return res.status(400).json({ error: "잘못된 유형" });
       }
-      //기존에 있던 파일을 지우고 새로운 파일을 imageUrn로 업데이트
+  
       let oldImageUrn: string = "";
   
       if (type === "image") {
@@ -191,6 +179,7 @@ const router = Router();
 router.get("/:name", userMiddleware, getSub);
 router.post("/", userMiddleware, authMiddleware, createSub);
 router.get("/sub/topSubs", topSubs);
-router.post("/:name/upload", userMiddleware, authMiddleware, ownSub, upload.single("file"), uploadSubImage);
+router.get("/:name/upload", userMiddleware, authMiddleware, ownSub, upload.single("file"), uploadSubImage);
+
 
 export default router;
