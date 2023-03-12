@@ -28,7 +28,7 @@ const InputGroup: React.FC<InputGroupProps> = ({
                 )}
                 placeholder={placeholder}
                 value={value}
-                onChange={(e) => setValue(e.target.value)}
+                onChange={(event) => setValue(event.target.value)}
             />
             <small className='font-medium text-red-500'>{error} </small>
         </div>

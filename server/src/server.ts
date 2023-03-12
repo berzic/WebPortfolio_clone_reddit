@@ -27,6 +27,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/subs", subRoutes);
 app.use("/api/posts", postRoutes);
 
+
 app.use(express.static("public"));
 
 let port = 4000;

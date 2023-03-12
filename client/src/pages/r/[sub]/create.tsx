@@ -9,9 +9,8 @@ const PostCreate = () => {
     const [body, setBody] = useState("");
     const router = useRouter();
     const { sub: subName } = router.query;
-
-    const submitPost = async (e: FormEvent) => {
-        e.preventDefault();
+    const submitPost = async (event: FormEvent) => {
+        event.preventDefault();
         if (title.trim() === "" || !subName) return;
 
         try {
@@ -26,7 +25,6 @@ const PostCreate = () => {
             console.log(error);
         }
     }
-
     return (
         <div className='flex flex-col justify-center pt-16'>
             <div className='w-10/12 mx-auto md:w-96'>
@@ -40,7 +38,7 @@ const PostCreate = () => {
                                 placeholder="제목"
                                 maxLength={20}
                                 value={title}
-                                onChange={(e) => setTitle(e.target.value)}
+                                onChange={(event) => setTitle(event.target.value)}
                             />
                             <div
                                 style={{ top: 10, right: 10 }}
@@ -54,7 +52,7 @@ const PostCreate = () => {
                             placeholder="설명"
                             className='w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-blue-500'
                             value={body}
-                            onChange={(e) => setBody(e.target.value)}
+                            onChange={(event) => setBody(event.target.value)}
                         />
                         <div className='flex justify-end'>
                             <button
@@ -72,15 +70,17 @@ const PostCreate = () => {
 
 export default PostCreate
 
-export const getServerSideProp: GetServerSideProps =async ({ req, res }) => {
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     try {
         const cookie = req.headers.cookie;
-        if(!cookie) throw new Error("쿠키가 없습니다.");
+        if (!cookie) throw new Error("쿠키가 없습니다.")
 
-        await axios.get("/auth/me", { headers: { cookie } });
+        await axios.get(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/auth/me`,
+            { headers: { cookie } })
         return { props: {} }
     } catch (error) {
         res.writeHead(307, { Location: "/login" }).end()
+        
         return { props: {} }
     }
 }

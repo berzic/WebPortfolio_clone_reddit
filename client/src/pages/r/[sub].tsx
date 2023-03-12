@@ -1,37 +1,27 @@
+import SideBar from '@/components/SideBar';
+import { useAuthState } from '@/context/auth';
 import axios from 'axios'
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { ChangeEvent, FormEvent, Fragment, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import useSWR from 'swr';
-import SideBar from '../../components/SideBar';
-import { useAuthState } from '../../context/auth';
 import { Post } from '../../types';
 
 const SubPage = () => {
     const [ownSub, setOwnSub] = useState(false);
     const { authenticated, user } = useAuthState();
-
-    const fetcher =async (url: string) => {
-        try {
-            const res = await axios.get(url);
-            return res.data;
-        } catch (error: any) {
-            throw error.response.data;
-        }
-    }   
-
     const fileInputRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
     const subName = router.query.sub;
-    const {data:  sub, error} = useSWR(subName ? `subs/${subName}` : null, fetcher);
-    console.log('sub,', sub);
-
+    const { data: sub, error } = useSWR(subName ? `/subs/${subName}` : null);
+    
     useEffect(() => {
         if (!sub || !user) return;
         setOwnSub(authenticated && user.username === sub.username);
     }, [sub])
-
+    console.log('sub', sub);
+    
     const uploadImage = async (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.files === null) return;
 
@@ -50,7 +40,7 @@ const SubPage = () => {
             console.log(error);
         }
     }
-    
+
     const openFileInput = (type: string) => {
         const fileInput = fileInputRef.current;
         if (fileInput) {
@@ -65,25 +55,25 @@ const SubPage = () => {
                 <>
                     <div>
                         <input type="file" hidden={true} ref={fileInputRef} onChange={uploadImage} />
-                        {/*banner image*/}
-                        <div className='bg-gray-400'>
-                        {sub.bannerUrl ? (
-                            <div
-                            className='h-56'
-                            style={{
-                                backgroundImage: `url(${sub.bannerUrl})`,
-                                backgroundRepeat: 'no-repeat',
-                                backgroundSize: 'cover',
-                                backgroundPosition: 'center',
-                            }}
-                            onClick={() => openFileInput("banner")}
-                            >
-                            </div>
-                        ) : (
-                            <div className='h-20 bg-gray-400'
-                                
-                            ></div>
-                        )}
+                        {/* banner image */}
+                        <div className="bg-gray-400">
+                            {sub.bannerUrl ? (
+                                <div
+                                    className='h-56'
+                                    style={{
+                                        backgroundImage: `url(${sub.bannerUrl})`,
+                                        backgroundRepeat: 'no-repeat',
+                                        backgroundSize: 'cover',
+                                        backgroundPosition: 'center',
+                                    }}
+                                    onClick={() => openFileInput("banner")}
+                                >
+                                </div>
+                            ) : (
+                                <div className='h-20 bg-gray-400'
+                                    onClick={() => openFileInput("banner")}
+                                ></div>
+                            )}
                         </div>
                         {/* 커뮤니티 메타 데이터 */}
                         <div className='h-20 bg-white'>
@@ -113,7 +103,7 @@ const SubPage = () => {
                     </div>
                     {/* Post와 SideBar */}
                     <div className='flex max-w-5xl px-4 pt-5 mx-auto'>
-                        <div className="w-full md:mr-3 md:w-8/12"> </div>
+                        <div className="w-full md:mr-3 md:w-8/12"></div>
                         <SideBar sub={sub} />
                     </div>
                 </>

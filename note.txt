@@ -17,7 +17,6 @@ dotenv
 jsonwebtoken
 classnames
 multer
-dayjs
 
 ++tsconfig.json : TypsScript로 작성된 코드를 JS로 Compile하는 옵션을 설정하는 파일
 
@@ -44,7 +43,7 @@ dayjs
 --자세한 동작은 auth의 주석을 참고.
 --회원가입 기능을 확인하는중, 500에러로 입력한 데이터를 확인하지 못하는것을 확인, data-source.ts에서 지정한 entries의 경로를 하드코딩하여 직접 entites와 연결하는것으로 수정.
 -- 회원가입 기능 확인용 등록한 User list
--- test01@register.com registertest01 password
+-- test@test.com testtest password
 -- 회원가입 버튼의 handleSubmit 작동 확인
 
 ++로그인 화면과 기능
@@ -56,10 +55,8 @@ dayjs
 --react에서 Hook으로 usestate를 사용해도 되지만, 조금더 복잡한 처리를 하기 위해 useReducer를 사용함.
 -- 회원가입 기능 확인용 등록한 User list
 -- test01@login.com logintest01 password
+-- test02@login.com logintest02 password
 -- 로그인 버튼의 handleSubmit(dispatch제외) 작동 확인.
-
--- 아래의 계정을 주로 사용할 예정
--- test@master.com master password
 
 ++커뮤니티 생성
 01. page의 안에  커뮤니티(Sub)를 만들기 위한 기능들을 모으기 위해 폴더를 생성 후, create.tsx를 만들어줌.
@@ -88,3 +85,4 @@ dayjs
 03. PostCreate 페이지 생성
 04. PostCreate 페이지의 기능 생성
 05. ICON font-awesome의 CDN을 이용
+

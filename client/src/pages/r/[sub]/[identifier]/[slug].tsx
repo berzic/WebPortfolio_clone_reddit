@@ -1,19 +1,17 @@
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router"
-import { Comment, Post } from "@/types";
 import { useAuthState } from "@/context/auth";
 import useSWR from 'swr';
 import dayjs from 'dayjs';
-import { FormEvent, useState } from "react";
-import classNames from 'classnames';
+import { Post } from "@/types";
 
 const PostPage = () => {
     const router = useRouter();
     const { identifier, sub, slug } = router.query;
-
-
-    const { data: post, error } = useSWR<Post>(identifier && slug ? `/ports/${identifier}/${slug}`: null);
+    const { authenticated, user } = useAuthState();
+   
+    const { data: post, error } = useSWR<Post>(identifier && slug ? `/posts/${identifier}/${slug}` : null);
     return (
         <div className="flex max-w-5xl px-4 pt-5 mx-auto">
             <div className="w-full md:mr-3 md:w-8/12">
@@ -50,12 +48,6 @@ const PostPage = () => {
                                     </div>
                                 </div>
                             </div>
-
-                            {/* 댓글 작성 구간 */}
-                            
-                            {/* 댓글 리스트 부분 */}
-                            
-
                         </>
                     )}
                 </div>
