@@ -17,6 +17,8 @@ dotenv
 jsonwebtoken
 classnames
 multer
+dayjs : 시간 표시 관련 모듈
+react-icon
 
 ++tsconfig.json : TypsScript로 작성된 코드를 JS로 Compile하는 옵션을 설정하는 파일
 
@@ -86,3 +88,10 @@ multer
 04. PostCreate 페이지의 기능 생성
 05. ICON font-awesome의 CDN을 이용
 
+++댓글 기능과 투표기능
+01. Post에 로그인을한 User만 댓글을 적는것이 가능하게 설정
+02. 댓글을 불러오는 route를 작성
+02. 댓글을 적성하면 바로 적용이 되도록 handleSubmit에 useSWR의 mutate를 추가.
+03. 댓글에 투표 기능을 위한 화면과 기능을 추가.
+04. ICON font-awesome의 아이콘이 적용이 되지 않아, react-icon을 사용하여 FaArrowUp, FaArrowDown을 
+05. 커뮤니티 페이지에 Post 나열
