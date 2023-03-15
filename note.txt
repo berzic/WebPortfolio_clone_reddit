@@ -1,6 +1,7 @@
 # WebPortfolio_clone_reddit
 use recat and TypeScript wiht next.js
-DB : postgreSQL with user docker
+DB : postgreSQL with process on docker
+CSS : TailwindCSS
 
 ++module
 nodemon : 코드를 변경을 할 때마다 서버를 다시 재시작 하지 않아도 자동으로 재시작을 해주는 역할
@@ -95,3 +96,17 @@ react-icon
 03. 댓글에 투표 기능을 위한 화면과 기능을 추가.
 04. ICON font-awesome의 아이콘이 적용이 되지 않아, react-icon을 사용하여 FaArrowUp, FaArrowDown을 
 05. 커뮤니티 페이지에 Post 나열
+
+++ 무한 스크롤
+01. 한 화면에 8개의 Post를 표현하는것으로 설정
+02. 무한 스크롤과 포스트를 나열하는것을 돕는 API로 swr의 useSWRInfinite 사용.
+-- Intersection observer 같이 사용
+
+++ User페이지 생성
+01. 해당 유저가 작성한 Post, Comment를 나열
+
+TO DO LIST
+++ 각종 UI 수정
+++ User페이지의 사진 변경 추가하기
+++ 나열한 포스트와 댓글 삭제기능
+
