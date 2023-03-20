@@ -105,8 +105,21 @@ react-icon
 ++ User페이지 생성
 01. 해당 유저가 작성한 Post, Comment를 나열
 
-TO DO LIST
-++ 각종 UI 수정
-++ User페이지의 사진 변경 추가하기
-++ 나열한 포스트와 댓글 삭제기능
+++ 한글 slug 문제 수정
+
+++AWS EC2 배포
+-- OS: ubuntu
+-- EC2에서 Docker를 설치
+-- https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-22-04
+-- sudo apt install docker-compose 
+-- EC2에 소스코드를 올리기 위해서 깃허브에 전부 commit
+
+TODO LIST
+++ 작성한 유저와 현재 로그인을 한 유저가 같다면 댓글의 삭제버튼을 표시
+-- (User 페이지만 적용을 할 예정) 댓글만 표시 완료
+-- 기능 미구현
+++ 댓글 삭제가 끝나면 Sub, Post도 댓글과 같이 삭제하는 기능을 추가
+++ 홈페이지의 상위커뮤니티를 통하여 Sub에 들어가는 경우, 멤버의 숫자를 표시하도록 설정할 예정
+-- select count(distinct username) from public.posts
+-- 미완성
 

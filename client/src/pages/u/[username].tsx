@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router'
 import React from 'react'
+import { FaTrash } from 'react-icons/fa';
 import useSWR from "swr";
 
 const UserPage = () => {
@@ -59,6 +60,15 @@ const UserPage = () => {
                 <hr/>
                 <p className='p-1'>{comment.body}</p>
               </div>
+              {/* 댓글 삭제 버튼 */}
+              {/* <div className="flex-shrink-0 w-10 py-2 text-center">
+              <div className="flex justify-center w-6 mx-auto text-gray-400 rounded cursor-pointer">
+                <FaTrash 
+                  className="float-right"
+                  // onClick={deleteComment}
+                />
+              </div>
+              </div> */}
             </div>
           )
         }

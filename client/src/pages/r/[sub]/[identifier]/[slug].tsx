@@ -156,7 +156,7 @@ const PostPage = () => {
                                             </textarea>
                                             <div className="flex justify-end">
                                                 <button
-                                                    className="px-3 py-1 text-white bg-gray-400 rounded"
+                                                    className="px-3 py-1 mb-4 text-white bg-gray-400 rounded"
                                                     disabled={newComment.trim() === ""}
                                                 >
                                                     댓글 작성
@@ -183,6 +183,7 @@ const PostPage = () => {
                             {/* 댓글 리스트 부분 */}
                             {comments?.map(comment => (
                                 <div className="flex" key={comment.identifier}>
+                                    
                                     {/* 좋아요 싫어요 기능 부분 */}
                                     <div className="flex-shrink-0 w-10 py-2 text-center rounded-l">
                                         {/* 좋아요 */}

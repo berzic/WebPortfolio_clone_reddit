@@ -18,13 +18,17 @@ const SideBar = ({ sub }: Props) => {
                 <div className='p-3'>
                     <p className='mb-3 text-base'>{sub?.description}</p>
                     <div className='flex mb-3 text-sm font-medium'>
-                        <div className='w-1/2'>
-                            <p>100</p>
-                            <p>멤버</p>
+                        <div className='w-1/5'>
+                            <div className=' text-lg'>
+                                <p>숫자</p>
+                            </div>
+                            <div className='text-gray-600'>
+                                <p>Members</p>
+                            </div>
                         </div>
                     </div>
                     <p className="my-3">
-                        {dayjs(sub?.createdAt).format('MM.DD.YYYY')}
+                        Created By {dayjs(sub?.createdAt).format('MM.DD.YYYY')}
                     </p>
 
                     {authenticated && (
