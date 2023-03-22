@@ -1,6 +1,6 @@
 module.exports = {
     apps: [{
         name: "clone-reddit-server",
-        script: "npm run start:production",
+        script: "npm run start:prod",
     }]
 }
