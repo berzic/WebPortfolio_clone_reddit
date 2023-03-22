@@ -5,9 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build:dev": "env-cmd -f .env.development next build",
-    "build:prod": "env-cmd -f .env.production next build",
+    "build:production": "env-cmd -f .env.production next build",
     "start:dev": "env-cmd -f .env.development next start",
-    "start:prod": "env-cmd -f .env.production next start",
+    "start:production": "env-cmd -f .env.production next start",
     "lint": "next lint"
   },
   "dependencies": {

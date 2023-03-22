@@ -141,7 +141,9 @@ react-icon
    pm2 start ecosystem.config.js 으로 실행
 
    server 배포 시작
-   
+   npm install
+   -- pm2를 사용한 무중단 배포를 위해 설치
+   pm2 start ecosystem.config.js 으로 실행
 
 TODO LIST
 ++ 작성한 유저와 현재 로그인을 한 유저가 같다면 댓글의 삭제버튼을 표시
