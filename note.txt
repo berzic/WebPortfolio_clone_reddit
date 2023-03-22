@@ -117,6 +117,12 @@ react-icon
 -- npm install env-cmd 설치하여 개발환경과 운영환경의 .env를 구분
 -- pm2를 사용하기 위해서 파일을 생성
 -- npm install sharp 설치하여 운영환경에서 이미지 최적화
+-- ubuntu에서 깃에서 pull을 한 파일을 사용하기 위해서 
+   sudo apt install npm
+   cd client
+   npm install
+   npm run build:production
+   npm run start:production
 
 TODO LIST
 ++ 작성한 유저와 현재 로그인을 한 유저가 같다면 댓글의 삭제버튼을 표시
