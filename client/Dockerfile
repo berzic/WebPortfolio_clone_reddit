@@ -14,6 +14,6 @@ COPY ./ ./
 
 ENV NODE_ENV production
 
-RUN npm run build:prod
+RUN npm run build:production
 
 CMD ["npm", "run", "start:production"]
