@@ -15,7 +15,7 @@ services:
     server:
         build: 
             context: ./server
-        container_name: reddit-server
+        container_name: clone-reddit-server
         restart: always
         ports:
             - "4000:4000"
@@ -26,7 +26,7 @@ services:
     client:
         build:
             context: ./client
-        container_name: reddit-client
+        container_name: clone-reddit-client
         ports:
             - "3000:3000"
         volumes:
