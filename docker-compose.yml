@@ -11,3 +11,25 @@ services:
             POSTGRES_PASSWORD: "${DB_USER_PASSWORD}"
         volumes:
             - ./data:/var/lib/postgresql/data
+
+    server:
+        build: 
+            context: ./server
+        container_name: reddit-server
+        restart: always
+        ports:
+            - "4000:4000"
+        volumes:
+            - /app/node_modules
+            - ./server:/app
+        
+    client:
+        build:
+            context: ./client
+        container_name: reddit-client
+        ports:
+            - "3000:3000"
+        volumes:
+            - /app/node_modules
+            - ./client:/app
+        stdin_open: true
