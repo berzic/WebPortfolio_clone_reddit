@@ -12,24 +12,24 @@ services:
         volumes:
             - ./data:/var/lib/postgresql/data
 
-    server:
-        build: 
-            context: ./server
-        container_name: clone-reddit-server
-        restart: always
-        ports:
-            - "4000:4000"
-        volumes:
-            - /app/node_modules
-            - ./server:/app
+    # server:
+    #     build: 
+    #         context: ./server
+    #     container_name: clone-reddit-server
+    #     restart: always
+    #     ports:
+    #         - "4000:4000"
+    #     volumes:
+    #         - /app/node_modules
+    #         - ./server:/app
         
-    client:
-        build:
-            context: ./client
-        container_name: clone-reddit-client
-        ports:
-            - "3000:3000"
-        volumes:
-            - /app/node_modules
-            - ./client:/app
-        stdin_open: true
+    # client:
+    #     build:
+    #         context: ./client
+    #     container_name: clone-reddit-client
+    #     ports:
+    #         - "3000:3000"
+    #     volumes:
+    #         - /app/node_modules
+    #         - ./client:/app
+    #     stdin_open: true
