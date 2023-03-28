@@ -6,4 +6,4 @@ tmp/
 temp/
 
 .env.production
-Dockerfile
+.Dockerfile
